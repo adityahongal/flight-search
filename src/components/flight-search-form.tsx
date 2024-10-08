@@ -1,80 +1,76 @@
 'use client'
 
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { Button } from './ui/buttons'
-import { Input } from './ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
+import React from 'react';
+import { useRouter } from 'next/navigation';
 
-const airports = [
-  { name: "Indira Gandhi International Airport", code: "DEL", city: "New Delhi", country: "India" },
-  { name: "Chhatrapati Shivaji Maharaj International Airport", code: "BOM", city: "Mumbai", country: "India" },
-  { name: "John F. Kennedy International Airport", code: "JFK", city: "New York", country: "United States" },
-  { name: "Dubai International Airport", code: "DXB", city: "Dubai", country: "United Arab Emirates" },
-  { name: "Heathrow Airport", code: "LHR", city: "London", country: "United Kingdom" },
-  { name: "Singapore Changi Airport", code: "SIN", city: "Singapore", country: "Singapore" },
-  { name: "Los Angeles International Airport", code: "LAX", city: "Los Angeles", country: "United States" },
-  { name: "Beijing Capital International Airport", code: "PEK", city: "Beijing", country: "China" },
-  { name: "Sydney Kingsford Smith International Airport", code: "SYD", city: "Sydney", country: "Australia" },
-  { name: "Tokyo Haneda Airport", code: "HND", city: "Tokyo", country: "Japan" }
-]
-
-export function FlightSearchForm() {
-  const router = useRouter()
-  const [from, setFrom] = useState('')
-  const [to, setTo] = useState('')
-  const [date, setDate] = useState('')
+const FlightSearchForm: React.FC = () => {
+  const router = useRouter();
+  const [from, setFrom] = React.useState('');
+  const [to, setTo] = React.useState('');
+  const [date, setDate] = React.useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (from && to && date) {
-      router.push(`/search?from=${from}&to=${to}&date=${date}`)
+      router.push(`/search?from=${from}&to=${to}&date=${date}`);
     }
-  }
+  };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="from">From</label>
-        <Select onValueChange={setFrom} required>
-          <SelectTrigger id="from">
-            <SelectValue placeholder="Select departure airport" />
-          </SelectTrigger>
-          <SelectContent>
-            {airports.map((airport) => (
-              <SelectItem key={airport.code} value={airport.code}>
-                {airport.name} ({airport.code})
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+    <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <div className="flex mb-4">
+        <div className="w-1/2 pr-2">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="from">
+            From
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="from"
+            type="text"
+            placeholder="Departure City"
+            value={from}
+            onChange={(e) => setFrom(e.target.value)}
+            required
+          />
+        </div>
+        <div className="w-1/2 pl-2">
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="to">
+            To
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="to"
+            type="text"
+            placeholder="Arrival City"
+            value={to}
+            onChange={(e) => setTo(e.target.value)}
+            required
+          />
+        </div>
       </div>
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="to">To</label>
-        <Select onValueChange={setTo} required>
-          <SelectTrigger id="to">
-            <SelectValue placeholder="Select arrival airport" />
-          </SelectTrigger>
-          <SelectContent>
-            {airports.map((airport) => (
-              <SelectItem key={airport.code} value={airport.code}>
-                {airport.name} ({airport.code})
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="date">Date</label>
-        <Input
-          type="date"
+      <div className="mb-6">
+        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="date">
+          Date
+        </label>
+        <input
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="date"
+          type="date"
           value={date}
           onChange={(e) => setDate(e.target.value)}
           required
         />
       </div>
-      <Button type="submit" className="w-full">Search Flights</Button>
+      <div className="flex items-center justify-center">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit"
+        >
+          Search Flights
+        </button>
+      </div>
     </form>
-  )
-}
+  );
+};
+
+export default FlightSearchForm;
